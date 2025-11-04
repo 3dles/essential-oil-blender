@@ -1,0 +1,5 @@
+{
+  "name": "Essential Oil Blender",
+  "description": "An application to create essential oil blends, calculate the chemical composition of the blend, and visualize it with a pie chart. It uses Gemini to provide an analysis of the blend's properties.",
+  "requestFramePermissions": []
+}
