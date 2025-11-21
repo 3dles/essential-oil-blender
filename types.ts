@@ -1,4 +1,3 @@
-
 export interface ChemicalComponent {
   name: string;
   percentage: number;
@@ -18,4 +17,12 @@ export interface BlendItem {
 export interface CompositionResult {
   name: string;
   value: number;
+}
+
+export interface SavedBlend {
+  id: string;
+  name: string;
+  blend: BlendItem[];
+  analysis: string;
+  composition: CompositionResult[];
 }

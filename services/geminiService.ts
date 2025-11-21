@@ -1,13 +1,17 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { CompositionResult } from '../types';
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+import { getApiKey } from '../utils/storage';
 
 export async function analyzeBlend(composition: CompositionResult[]): Promise<string> {
-  if (!process.env.API_KEY) {
-    throw new Error("API_KEY is not set");
+  const apiKey = getApiKey();
+  
+  if (!apiKey) {
+    throw new Error("API Key가 설정되지 않았습니다. 우측 상단 설정 버튼을 눌러 API Key를 입력해주세요.");
   }
+
+  // Initialize the client dynamically with the stored key
+  const ai = new GoogleGenAI({ apiKey });
 
   const compositionString = composition
     .map(c => `${c.name}: ${c.value}%`)
@@ -34,9 +38,9 @@ export async function analyzeBlend(composition: CompositionResult[]): Promise<st
         model: 'gemini-2.5-flash',
         contents: prompt
     });
-    return response.text;
+    return response.text || "분석 결과를 생성할 수 없습니다.";
   } catch (error) {
     console.error("Error analyzing blend with Gemini API:", error);
-    throw new Error("Gemini API request failed.");
+    throw new Error("Gemini API 요청에 실패했습니다. API Key가 올바른지 확인하거나 잠시 후 다시 시도해주세요.");
   }
 }
